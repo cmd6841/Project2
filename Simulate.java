@@ -19,36 +19,69 @@ import edu.rit.util.Random;
  * 
  */
 public class Simulate {
-	private static double jobExecTime = 1.0;
-	private static int totalJobs = 10000;
+	// The mean job execution time for all the servers in the system.
+	private static double jobExecTime = 10.0;
+
+	// The total number of jobs to be executed in the simulation.
+	private static int totalJobs = 100;
+
+	// Seed given to the random number generator.
 	private static long seed = 142857;
+
+	// A pseudo random number generator.
 	private static Random rand;
+
+	// A Simulation object.
 	private static Simulation sim;
+
+	// ComputeServer objects.
 	private static ComputeServer server1;
 	private static ComputeServer server2;
 	private static ComputeServer server3;
 	private static ComputeServer server4;
+
+	// JobAdder object.
 	private static JobAdder jobAdder;
+
+	// JobQueue object.
 	private static JobQueue jobQueue;
 
+	// Lower bound of the mean job inter-arrival time.
 	private static double minInterArrTime = 0.1;
-	private static double maxInterArrTime = 5.0;
-	private static double deltaInterArrTime = 0.1;
 
+	// Higher bound of the mean job inter-arrival time.
+	private static double maxInterArrTime = 10.0;
+
+	// Delta of the mean job inter-arrival time.
+	private static double deltaInterArrTime = 0.05;
+
+	// A series to accumulate the interarrival times in the simulation.
 	private static ListSeries interArrTimes;
+
+	// A series to accumulate the mean response times for Grid Computing System
+	// A of each iteration in the simulation.
 	private static ListSeries meanRespTimesA;
+
+	// A series to accumulate the mean response times for Grid Computing System
+	// B of each iteration in the simulation.
 	private static ListSeries meanRespTimesB;
 
+	/**
+	 * The main method.
+	 * 
+	 * @param args
+	 *            command line arguments
+	 */
 	public static void main(String[] args) {
-		if (args.length != 6)
-			usage();
-
-		jobExecTime = Double.parseDouble(args[0]);
-		minInterArrTime = Double.parseDouble(args[1]);
-		maxInterArrTime = Double.parseDouble(args[2]);
-		deltaInterArrTime = Double.parseDouble(args[3]);
-		seed = Integer.parseInt(args[4]);
-		totalJobs = Integer.parseInt(args[5]);
+		// if (args.length != 6)
+		// usage();
+		//
+		// jobExecTime = Double.parseDouble(args[0]);
+		// minInterArrTime = Double.parseDouble(args[1]);
+		// maxInterArrTime = Double.parseDouble(args[2]);
+		// deltaInterArrTime = Double.parseDouble(args[3]);
+		// seed = Integer.parseInt(args[4]);
+		// totalJobs = Integer.parseInt(args[5]);
 
 		rand = Random.getInstance(seed);
 		interArrTimes = new ListSeries();
@@ -60,7 +93,8 @@ public class Simulate {
 		System.out.println("\ttresp\t\ttresp\t\ttresp\t\ttresp");
 		System.out.println("treq\tmean\t\tstddev\t\tmean\t\tstddev\t\tt\t\tp");
 
-		for (interArrTime = minInterArrTime; interArrTime <= maxInterArrTime; interArrTime += deltaInterArrTime) {
+		for (interArrTime = minInterArrTime; interArrTime <= maxInterArrTime; 
+				interArrTime += deltaInterArrTime) {
 			interArrTimes.add(interArrTime);
 			System.out.printf("%.3f", interArrTime);
 			sim = new Simulation();
